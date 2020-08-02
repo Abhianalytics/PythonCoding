@@ -1,0 +1,20 @@
+# Title     : Melbourne Home prices data exercise for Kaggle ML
+# Objective : Kaggle exercise for ML
+# Created by: Abhishek Gaur
+# Created on: 8/1/2020
+
+
+import pandas as pd
+
+
+# Selecting Data for modelling
+
+#Melbourne File Path
+melbourne_file_path = 'C:\\Users\\gaura\\OneDrive\\Documents\\Abhishek\\Python\\Data\\melb_data.csv'
+melbourne_data = pd.read_csv(melbourne_file_path)
+print(melbourne_data.columns)
+
+# Choosing features
+melbourne_features = ['Rooms', 'Bathroom', 'Landsize', 'Lattitude', 'Longtitude']
+X = melbourne_data[melbourne_features]
+print(X.describe())
