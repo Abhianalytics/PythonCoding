@@ -1,0 +1,36 @@
+# Title     : Melbourne Home prices data exercise for Kaggle ML
+# Objective : Kaggle exercise for ML
+# Created by: Abhishek Gaur
+# Created on: 8/1/2020
+
+import pandas as pd
+from sklearn.tree import DecisionTreeRegressor
+
+
+# Selecting Data for modelling
+
+#Melbourne File Path
+melbourne_file_path = 'C:\\Users\\gaura\\OneDrive\\Documents\\Abhishek\\Python\\Data\\melb_data.csv'
+melbourne_data = pd.read_csv(melbourne_file_path)
+print(melbourne_data.columns)
+
+# Choosing features
+melbourne_features = ['Rooms', 'Bathroom', 'Landsize', 'Lattitude', 'Longtitude']
+X = melbourne_data[melbourne_features]
+print(X.describe())
+print(X.head())
+
+y=melbourne_data.Price
+
+# Define model. Specify a number for random_state to ensure same results each run
+melbourne_model = DecisionTreeRegressor(random_state=1)
+
+# Fit model
+melbourne_model.fit(X, y)
+melbourne_model.fit
+
+# Making Predictions
+print("Making predictions for the following 5 houses:")
+print(X.head())
+print("The predictions are")
+print(melbourne_model.predict(X.head()))
