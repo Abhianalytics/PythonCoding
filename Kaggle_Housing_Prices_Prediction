@@ -1,0 +1,46 @@
+# Title     : Kaggle Housing Prices prediction example from Educative
+# Objective : Kaggle exercise for ML
+# Created by: Abhishek Gaur
+# Created on: 9/3/2020
+
+
+# Core Modules
+import pandas as pd
+import numpy as np
+
+# Basic modules for data visualization
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load data into a pandas DataFrame from given filepath
+housing = pd.read_csv('C:\\Users\\gaura\\OneDrive\\Documents\\Abhishek\\Coursera\\Educative\\Kaggle\\house-prices-advanced-regression-techniques\\train.csv')
+#Dropping ID Column as its not required for the data analysis
+housing = housing.drop("Id", axis=1)
+
+#print(housing.shape)
+#print(housing.head)
+#print(housing.info())
+
+#Excluding categorical attributes and checking the statistical summary of the data
+#print(housing.select_dtypes(exclude=['object']).describe().round(decimals=2).transpose())
+
+#Excluding numerical attributes and checking the description summary of the data
+print(housing.select_dtypes(include=['object']).describe().transpose())
+
+#taking a log of the saleprice to reduce the skewness of the data
+#   sns.distplot(np.log(housing['SalePrice']))
+#plt.show()
+
+
+# Look at the distribution of all the numerical variables
+num_attributes = housing.select_dtypes(exclude='object').drop(['SalePrice'], axis=1).copy()
+print(len(num_attributes.columns))
+
+fig = plt.figure(figsize=(12,18))
+for i in range(len(num_attributes.columns)):
+    fig.add_subplot(9,4,i+1)
+    sns.distplot(num_attributes.iloc[:,i].dropna(), hist = False, rug = True)
+    plt.xlabel(num_attributes.columns[i])
+
+#plt.tight_layout()
+plt.show()
