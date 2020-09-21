@@ -1,0 +1,114 @@
+# Title     : Kaggle Housing Prices prediction example from Educative (Data Transformation)
+# Objective : Kaggle exercise for ML
+# Created by: Abhishek Gaur
+# Created on: 9/21/2020
+
+# Import modules
+import pandas as pd
+import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+# Load data into a pandas DataFrame from given filepath
+housing = pd.read_csv('C:\\Users\\gaura\\OneDrive\\Documents\\Abhishek\\Coursera\\Educative\\Kaggle\\house-prices-advanced-regression-techniques\\train.csv')
+
+# Imputing Missing Values
+
+housing_processed = housing
+
+# Categorical columns:
+cat_cols_fill_none = ['PoolQC', 'MiscFeature', 'Alley', 'Fence', 'FireplaceQu',
+                      'GarageCond', 'GarageQual', 'GarageFinish', 'GarageType',
+                      'BsmtFinType2', 'BsmtExposure', 'BsmtFinType1', 'BsmtQual', 'BsmtCond',
+                      'MasVnrType']
+
+# Replace missing values for categorical columns with None
+for cat in cat_cols_fill_none:
+    housing_processed[cat] = housing_processed[cat].fillna("None")
+
+# Group by neighborhood and fill in missing value by the median LotFrontage of all the neighborhood
+housing_processed['LotFrontage'] = housing_processed.groupby("Neighborhood")["LotFrontage"].transform(
+    lambda x: x.fillna(x.median()))
+
+# Garage: GarageYrBlt, GarageArea and GarageCars these are numerical columns, replace with zero
+for col in ['GarageYrBlt', 'GarageArea', 'GarageCars']:
+    housing_processed[col] = housing_processed[col].fillna(int(0))
+
+# MasVnrArea : replace with zero
+housing_processed['MasVnrArea'] = housing_processed['MasVnrArea'].fillna(int(0))
+
+# Use the mode value
+housing_processed['Electrical'] = housing_processed['Electrical'].fillna(housing_processed['Electrical']).mode()[0]
+
+# There is no need of Utilities so let's just drop this column
+housing_processed = housing_processed.drop(['Utilities'], axis=1)
+
+# Get the count again to verify that we do not have any more missing values
+print(housing_processed.isnull().apply(sum).max())
+
+#Deal with the outliers
+num_attributes = housing_processed.select_dtypes(exclude='object')
+
+high_quant = housing_processed.quantile(.999)
+
+for i in num_attributes.columns:
+    housing_processed = housing_processed.drop(housing_processed[i][housing_processed[i]>high_quant[i]].index)
+
+housing_processed.info()
+# we are now left with 1422 rows
+
+# Deal with Correlated attributes
+# Remove highly correlated features
+# Remove attributes that were identified for excluding when viewing scatter plots & corr values
+attributes_drop = ['MiscVal', 'MoSold', 'YrSold', 'BsmtFinSF2','BsmtHalfBath','MSSubClass',
+                   'GarageArea', 'GarageYrBlt', '3SsnPorch']
+
+housing_processed = housing_processed.drop(attributes_drop, axis=1)
+
+
+#Handle Text And Categorical Attributes
+#### Transforming Cat variables and creating a sparse matrix using OneHotEncoder
+
+from sklearn.preprocessing import OneHotEncoder
+cat_encoder = OneHotEncoder()
+housing_processed_1hot = cat_encoder.fit_transform(housing_processed)
+#housing_processed_1hot.info()
+
+# Separate features and target variable
+housing_X = housing_processed.drop("SalePrice", axis=1)
+housing_y = housing_processed["SalePrice"].copy()
+
+# Get the list of names for numerical and categorical attributes separately
+num_attributes = housing_X.select_dtypes(exclude='object')
+cat_attributes = housing_X.select_dtypes(include='object')
+
+num_attribs = list(num_attributes)
+cat_attribs = list(cat_attributes)
+print("Numerical", num_attribs)
+print("Categorical", cat_attribs)
+# Numerical Pipeline to impute any missing values with the median and scale attributes
+num_pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy="median")),
+        ('std_scaler', StandardScaler()),
+    ])
+   
+full_pipeline = ColumnTransformer([
+        ("num", num_pipeline, num_attribs),
+        ("cat", OneHotEncoder(), cat_attribs),
+    ])
+
+
+# Description before applying transforms
+print(housing_y.describe())
+
+# Apply log-transform to SalePrice
+housing_y_prepared  = np.log(housing_y)
+
+# Run the transformation pipeline on all the other attributes
+housing_X_prepared = full_pipeline.fit_transform(housing_X)
+
+# Description before applying transforms
+print(housing_y_prepared.describe())
+
+housing_X_prepared
