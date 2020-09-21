@@ -1,0 +1,47 @@
+# Data Pre-Procressing (including imputing missing values
+
+# Imputing Missing Values
+
+housing_processed = housing
+
+# Categorical columns:
+cat_cols_fill_none = ['PoolQC', 'MiscFeature', 'Alley', 'Fence', 'FireplaceQu',
+                      'GarageCond', 'GarageQual', 'GarageFinish', 'GarageType',
+                      'BsmtFinType2', 'BsmtExposure', 'BsmtFinType1', 'BsmtQual', 'BsmtCond',
+                      'MasVnrType']
+
+# Replace missing values for categorical columns with None
+for cat in cat_cols_fill_none:
+    housing_processed[cat] = housing_processed[cat].fillna("None")
+
+# Group by neighborhood and fill in missing value by the median LotFrontage of all the neighborhood
+housing_processed['LotFrontage'] = housing_processed.groupby("Neighborhood")["LotFrontage"].transform(
+    lambda x: x.fillna(x.median()))
+
+# Garage: GarageYrBlt, GarageArea and GarageCars these are numerical columns, replace with zero
+for col in ['GarageYrBlt', 'GarageArea', 'GarageCars']:
+    housing_processed[col] = housing_processed[col].fillna(int(0))
+
+# MasVnrArea : replace with zero
+housing_processed['MasVnrArea'] = housing_processed['MasVnrArea'].fillna(int(0))
+
+# Use the mode value
+housing_processed['Electrical'] = housing_processed['Electrical'].fillna(housing_processed['Electrical']).mode()[0]
+
+# There is no need of Utilities so let's just drop this column
+housing_processed = housing_processed.drop(['Utilities'], axis=1)
+
+# Get the count again to verify that we do not have any more missing values
+print(housing_processed.isnull().apply(sum).max())
+
+#Deal with the outliers
+num_attributes = housing_processed.select_dtypes(exclude='object')
+
+high_quant = housing_processed.quantile(.999)
+
+for i in num_attributes.columns:
+    housing_processed = housing_processed.drop(housing_processed[i][housing_processed[i]>high_quant[i]].index)
+
+housing_processed.info()
+
+# we are now left with 1422 rows
