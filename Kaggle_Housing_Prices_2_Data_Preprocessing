@@ -45,3 +45,11 @@ for i in num_attributes.columns:
 housing_processed.info()
 
 # we are now left with 1422 rows
+
+# Deal with Correlated attributes
+# Remove highly correlated features
+# Remove attributes that were identified for excluding when viewing scatter plots & corr values
+attributes_drop = ['MiscVal', 'MoSold', 'YrSold', 'BsmtFinSF2','BsmtHalfBath','MSSubClass',
+                   'GarageArea', 'GarageYrBlt', '3SsnPorch']
+
+housing_processed = housing_processed.drop(attributes_drop, axis=1)
