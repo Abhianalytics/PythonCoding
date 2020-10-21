@@ -1,0 +1,42 @@
+# Title     : Find English Words
+# Objective : Given a set of characters, how to extract English Dictionary words from them
+# Created by: Abhishek Gaur
+# Created on: 10/08/2020
+
+import pandas as pd
+import numpy as np
+
+
+import enchant
+import nltk
+#nltk.download('words')
+#nltk.download('wordnet')
+#from nltk.corpus import words
+#from nltk.corpus import wordnet
+
+word_file_path = 'C:\\Users\\gaura\\OneDrive\\Documents\\Abhishek\\Python\\Words\\words.csv'
+word_data = pd.read_csv(word_file_path)
+print(word_data.info())
+list1 = {'t','a','h','u','c' ,'o','r'}
+list2 = {'p'}
+#if 'an' in word_data:
+ #   print('an')
+
+for i in list1:
+    for j in list1:
+        for k in list1:
+            for l in list1:
+                for m in list1:
+                    for o in list1:
+                        for r in list1:
+
+                        #if ((i=='e') or (i=='u') or (k=='e') or (k=='u') or (l=='e') or (l=='u')or (m=='e') or (m=='u')):
+                                n = i + j + k + l + m + o + r
+                            #if n in word_data.values:
+                                if n in word_data.values:
+                                    print(n)
+
+
+
+
+
