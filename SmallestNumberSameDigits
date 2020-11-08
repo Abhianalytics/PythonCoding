@@ -1,0 +1,43 @@
+
+# Title     : smallest_number_with_same _digits
+# Objective : Find the smallest number with the same number of digits
+# Created by: Abhishek Gaur
+# Created on: 11/03/2020
+
+#import pandas as pd
+#import numpy as np
+
+def dig_min(num):
+
+    if (int(num) < 1 or int(num) > 1000000000):
+        print('you have entered an out of bound number')
+        exit()
+    else:
+        length = len(str(num))
+        if length == 1:
+            print('0')
+        if length == 2:
+            print('10')
+        if length == 3:
+            print('100')
+        if length == 3:
+            print('100')
+        if length == 4:
+            print('1000')
+        if length == 5:
+            print('10000')
+        if length == 6:
+            print('100000')
+        if length == 7:
+            print('1000000')
+        if length == 8:
+            print('10000000')
+        if length == 9:
+            print('100000000')
+        return;
+
+
+print('enter a number between 1 and 10^9')
+numb = input()
+dig_min(numb)
+
