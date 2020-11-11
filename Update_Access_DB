@@ -1,0 +1,22 @@
+# Title     : Access Database Update
+# Objective : Simple program to test database connectivity and update a database in MS Access.
+# Created by: Abhishek Gaur
+# Created on: 11/11/2020
+
+import pyodbc
+
+conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\gaura\OneDrive\Documents\University.accdb;')
+c1 = conn.cursor()
+c1.execute('select * from Courses')
+for row in c1.fetchall():
+    print (row)
+
+c2 = conn.cursor()
+c2.execute('''UPDATE Courses SET TEACHERID = 'T5' WHERE COURSEID = 'C3' ''')
+c2.commit()
+
+c3 = conn.cursor()
+c3.execute('select * from Courses')
+for row in c3.fetchall():
+    print (row)
+
