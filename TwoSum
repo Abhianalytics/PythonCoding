@@ -1,0 +1,16 @@
+
+# Title     : TwoSum (Leetcode)
+# Objective : Given an array of integers 'nums' and a 'target' number, return the indices of the two numbers from the array, whose sum is equal to 'target'
+# Created by: Abhishek Gaur
+# Created on: 11/12/2020
+
+
+def solution(nums:[int], target: int):
+    #print(len(nums))
+    for i in range(0,len(nums)):
+        for j in range(0,len(nums)):
+            if (nums[i]+nums[j]) == target:
+                return [i,j]
+    return;
+
+print(solution([1,2,3,4],7))
