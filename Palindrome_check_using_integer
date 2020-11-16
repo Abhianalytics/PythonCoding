@@ -1,0 +1,26 @@
+# Title     : PalindromeCheck (Leetcode)
+# Objective : Given a number, check whether its a Palindrome or not (using integer logic, not string)
+# Created by: Abhishek Gaur
+# Created on: 11/16/2020
+
+def solution(num):
+    pal = int(num)   #convert num to an integer object
+
+    l = len(str(pal))
+
+    for i in range(l):
+        if i < int(l)/2+1:
+            i1 = int(pal / (pow(10, len(str(pal)) - 1)))
+            r1 = pal % (pow(10, len(str(pal)) - 1))
+            r2 = int(r1 / 10)
+            i2 = pal % 10
+            if (i1 != i2):
+                print(i1)
+                print(i2)
+                print(r1)
+                print(r2)
+                return "NO"
+            pal = r2
+    return "YES"
+
+print(solution("1212121"))
