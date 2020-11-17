@@ -1,0 +1,19 @@
+# Title     : Reverse integer (Leetcode)
+# Objective : Given an integer,  write a code to the reverse the integer.
+# Created by: Abhishek Gaur
+# Created on: 11/17/2020
+
+def reverse(intg):
+    num = int(intg)   #convert num to an integer object
+
+    s = 0
+    num1 = num
+    for i in range(len(str(num))):
+        i1 = num1 % 10
+        s = s + i1 * pow(10,len(str(num1))-1)
+        num1 = int(num1 / 10)
+        #print("S="+ str(s))
+        #print("i1="+str(i1))
+    return s
+
+print(reverse("1004"))
