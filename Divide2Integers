@@ -1,0 +1,21 @@
+# Title     : Divide 2 integers (Leetcode)
+# Objective : Given a divisor and dividend,  divide two integers without using multiplication, division, and mod operator.
+# Created by: Abhishek Gaur
+# Created on: 11/16/2020
+
+def solution(dividend, divisor):
+    dividend1 = int(dividend)   #convert num to an integer object
+    divisor1 = int(divisor)
+    #print(dividend1)
+    #print(divisor1)
+    s = 0
+    i = 0
+    while s <= dividend1:
+        s = s + divisor1
+        if (s <= dividend1):
+            #print(s)
+            #print(i)
+            i = i + 1
+    return i
+
+print(solution("100", "10"))
