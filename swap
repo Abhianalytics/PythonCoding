@@ -1,0 +1,23 @@
+
+# Title     : Swap and Match
+# Objective : Given two strings, we need to swap two letters of string1 so that it becomes string2. If we can do that,
+#               return "YES" else return "NO"
+# Created by: Abhishek Gaur
+# Created on: 11/27/2020
+
+def swapncompare(s1, s2):
+    list1 = list(s1)
+    list2 = list(s2)
+    if len(list1) == len(list2):
+        if s1 != s2:
+            for i in range(len(list1)):
+                for j in range(len(list1)):
+                    temp = list1[j]
+                    list1[j] = list1[i]
+                    list1[i] = temp
+                    if list1 == list2:
+                        return "YES"
+        return "NO"
+    return "NO"
+
+print(swapncompare("abc","acbe"))
