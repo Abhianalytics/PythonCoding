@@ -1,0 +1,37 @@
+
+# Title     : Longest Palindrome Substring (Leetcode)
+# Objective : Given a string s, return the longest palindromic substring in s.
+# Created by: Abhishek Gaur
+# Created on: 12/11/2020
+
+def palincheck(num):
+    pal = list(num)   #convert num to a list object
+
+    for i in range(len(pal)):
+        if i < int(len(pal)/2+1):
+            i1 = i
+            i2 = -(i+1)
+
+            if (pal[i1] != pal[i2]):
+                return "NO"
+    return "YES"
+
+def solution(st):
+    l=len(st)
+    if palincheck(st) == 'YES':
+        return(st)
+    else:
+        l=len(st)
+
+        j = l-1
+
+        while j > 0:
+            i = 0
+            for i in range(l - j):
+
+                temp = st[i:i+j]
+
+                if palincheck(temp) == 'YES':
+                    return(temp)
+            j = j - 1
+print(solution("12121211"))
